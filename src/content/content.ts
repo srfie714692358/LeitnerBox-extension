@@ -1,0 +1,1 @@
+console.log("Leitner box is working. You can edit src/content/content.ts file.")
