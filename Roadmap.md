@@ -3,7 +3,7 @@
 ## Phase 1 – Extension Core (MVP)
 - [x] Project setup with Vite + CRXJS
 - [x] Manifest v3 configuration
-- [ ] Content script for text selection
+- [x] Content script for text selection
 - [ ] Popup UI with Tailwind
 - [ ] Translation API integration
 - [ ] Save word locally (temporary storage)
