@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import type { Message, StorageLocal } from "../types/storage";
 
-function useLocalGet(key: keyof StorageLocal) {
+function useStorageLocalGet(key: keyof StorageLocal) {
 	const [value, setValue] = useState<string | null>(null);
 	useEffect(() => {
 		chrome.runtime.sendMessage<Message>({ type: "TEXT_CLEARED" });
@@ -16,4 +16,4 @@ function useLocalGet(key: keyof StorageLocal) {
 	return value;
 }
 
-export default useLocalGet;
+export default useStorageLocalGet;
