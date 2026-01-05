@@ -1,5 +1,14 @@
-// src/config/providers.ts
-import type { Translate } from "@/types/providers";
+import type { Translate, Dictionary } from "@/types/providers";
+import { myMemoryExtractor, libreExtractor, googleExtractor, deepLExtractor } from "@/utils/mappers/translate.mapper";
+import {
+	myMemoryConfigurator,
+	libreConfigurator,
+	googleConfigurator,
+	deepLConfigurator,
+} from "@/utils/builders/translate.builder";
+
+import { freeDictionaryExtractor, urbanDictionaryExtractor } from "@/utils/mappers/dictionary.mapper";
+import { freeDictionaryConfigurator, urbanDictionaryConfigurator } from "@/utils/builders/dictionary.builder";
 
 export const TRANSLATE_PROVIDERS: Translate[] = [
 	{
@@ -8,17 +17,8 @@ export const TRANSLATE_PROVIDERS: Translate[] = [
 		url: "https://api.mymemory.translated.net/get",
 		requiresKey: false,
 		method: "GET",
-		extractor: (v) => {
-			const data = v as { responseData: { translatedText: string } };
-			return data?.responseData?.translatedText || "";
-		},
-		configurator: (text, sourceLang, targetLang, apiKey) => ({
-			params: {
-				q: text,
-				langpair: `${sourceLang}|${targetLang}`,
-				...(apiKey ? { key: apiKey } : {}),
-			},
-		}),
+		extractor: myMemoryExtractor,
+		configurator: myMemoryConfigurator,
 	},
 	{
 		id: "libre",
@@ -26,22 +26,8 @@ export const TRANSLATE_PROVIDERS: Translate[] = [
 		url: "https://libretranslate.de/translate",
 		requiresKey: false,
 		method: "POST",
-		extractor: (v) => {
-			const data = v as { translatedText: string };
-			return data?.translatedText || "";
-		},
-		// eslint-disable-next-line @typescript-eslint/no-unused-vars
-		configurator: (text, sourceLang, targetLang, _apiKey) => ({
-			headers: {
-				"Content-Type": "application/json",
-			},
-			data: {
-				q: text,
-				source: sourceLang,
-				target: targetLang,
-				format: "text",
-			},
-		}),
+		extractor: libreExtractor,
+		configurator: libreConfigurator,
 	},
 	{
 		id: "google",
@@ -49,22 +35,8 @@ export const TRANSLATE_PROVIDERS: Translate[] = [
 		url: "https://translation.googleapis.com/language/translate/v2",
 		requiresKey: true,
 		method: "POST",
-		extractor: (v) => {
-			const data = v as { data: { translations: Array<{ translatedText: string }> } };
-			return data?.data?.translations?.[0]?.translatedText || "";
-		},
-		configurator: (text, sourceLang, targetLang, apiKey) => ({
-			headers: {
-				"Content-Type": "application/json",
-			},
-			data: {
-				q: text,
-				source: sourceLang,
-				target: targetLang,
-				format: "text",
-				key: apiKey, // Google typically expects the key in the body for simple implementations
-			},
-		}),
+		extractor: googleExtractor,
+		configurator: googleConfigurator,
 	},
 	{
 		id: "deepl",
@@ -72,22 +44,31 @@ export const TRANSLATE_PROVIDERS: Translate[] = [
 		url: "https://api-free.deepl.com/v2/translate",
 		requiresKey: true,
 		method: "POST",
-		extractor: (v) => {
-			const data = v as { translations: Array<{ text: string }> };
-			return data?.translations?.[0]?.text || "";
-		},
-		configurator: (text, sourceLang, targetLang, apiKey) => ({
-			headers: {
-				Authorization: `DeepL-Auth-Key ${apiKey}`,
-				"Content-Type": "application/json",
-			},
-			data: {
-				text: [text], // DeepL expects an array of texts
-				source_lang: sourceLang.toUpperCase(), // DeepL requires uppercase (e.g., EN, ES)
-				target_lang: targetLang.toUpperCase(),
-			},
-		}),
+		extractor: deepLExtractor,
+		configurator: deepLConfigurator,
 	},
 ];
 
-export const DEFAULT_PROVIDER_ID = "mymemory";
+export const DICTIONARY_PROVIDERS: Dictionary[] = [
+	{
+		id: "freedictionary",
+		name: "Free Dictionary API",
+		url: "https://api.dictionaryapi.dev/api/v2/entries/en/",
+		requiresKey: false,
+		method: "GET",
+		extractor: freeDictionaryExtractor,
+		configurator: freeDictionaryConfigurator,
+	},
+	{
+		id: "urban",
+		name: "Urban Dictionary",
+		url: "https://api.urbandictionary.com/v0/define",
+		requiresKey: false,
+		method: "GET",
+		extractor: urbanDictionaryExtractor,
+		configurator: urbanDictionaryConfigurator,
+	},
+];
+
+export const DEFAULT_TRANSLATE_PROVIDER_ID = "mymemory";
+export const DEFAULT_DICTIONARY_PROVIDER_ID = "freedictionary";
