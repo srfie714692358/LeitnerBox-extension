@@ -1,8 +1,8 @@
 import { fetchGeneric } from "./fetchGeneric";
 import { TRANSLATE_PROVIDERS } from "@/config/providers";
-import type { Options, Result } from "@/types/translateAPI";
+import type { ApiOptions, ApiResult } from "@/types/translate";
 
-export async function fetchTranslation(options: Options, signal?: AbortSignal): Promise<Result> {
+export async function fetchTranslation(options: ApiOptions, signal?: AbortSignal): Promise<ApiResult> {
 	return fetchGeneric(
 		TRANSLATE_PROVIDERS,
 		{

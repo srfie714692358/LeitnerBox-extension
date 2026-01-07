@@ -6,8 +6,11 @@
 - [x] Content script for text selection
 - [x]  Translation API + hook (Refactored to generic architecture)
 - [x] Get definition of word API + hook (Implemented generic architecture)
-- [ ] Split text to words
-- [ ] Translate words just by one request
+- [x] Split text to words
+- [x] Translate words just by one request (a hook for mixing and extracting the text and words)
+- [ ] Project needs review, restructure and cleanup
+- [ ] A hook for save words in storage
+- [ ] A hook for reload words from storage
 - [ ] Use these APIs in background * the extension should translate and get definition in background. It will be a option that user will be able to turn it on/off in settings
 - [ ] Popup UI with Tailwind for show result * The result should have two tabs, 1. Show the translation and save button, 2. Show definition of words and save button
 - [ ] Save word locally (temporary storage)

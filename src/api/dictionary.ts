@@ -1,8 +1,8 @@
 import { fetchGeneric } from "./fetchGeneric";
 import { DICTIONARY_PROVIDERS } from "@/config/providers";
-import type { Options, Result } from "@/types/dictionaryAPI";
+import type { ApiOptions, ApiResult } from "@/types/dictionary";
 
-export async function fetchDefinition(options: Options, signal?: AbortSignal): Promise<Result> {
+export async function fetchDefinition(options: ApiOptions, signal?: AbortSignal): Promise<ApiResult> {
 	return fetchGeneric(
 		DICTIONARY_PROVIDERS,
 		{

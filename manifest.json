@@ -3,7 +3,12 @@
     "name": "My Vite Extension",
     "version": "1.0.0",
     "action": {
-        "default_popup": "popup.html"
+        "default_popup": "src/popup/index.html"
+    },
+    "options_page": "src/options/index.html",
+    "options_ui": {
+        "page": "src/options/index.html",
+        "open_in_tab": true
     },
     "content_scripts": [
         {

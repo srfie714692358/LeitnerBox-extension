@@ -18,7 +18,9 @@ interface DeepLResponse {
 
 export const myMemoryExtractor: Translate["extractor"] = (v) => {
 	const data = v as MyMemoryResponse;
-	return data?.responseData?.translatedText || "";
+	const result = data?.responseData?.translatedText || "";
+	const doc = new DOMParser().parseFromString(result, "text/html");
+	return doc.documentElement.textContent || "";
 };
 
 export const libreExtractor: Translate["extractor"] = (v) => {

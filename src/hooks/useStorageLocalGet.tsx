@@ -7,9 +7,12 @@ function useStorageLocalGet(key: keyof StorageLocal) {
 		chrome.runtime.sendMessage<Message>({ type: "TEXT_CLEARED" });
 
 		chrome.storage.local.get<StorageLocal>([key], (result) => {
-			if (result.selectedText) {
-				setValue(result.selectedText);
-				chrome.storage.local.remove(["selectedText"]);
+			const storedValue = result[key];
+			if (storedValue) {
+				setValue(storedValue);
+				chrome.storage.local.remove([key]);
+			} else {
+				console.log("No text found for key:", key);
 			}
 		});
 	}, [key]);
